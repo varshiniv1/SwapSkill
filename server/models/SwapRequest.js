@@ -25,9 +25,8 @@ const swapRequestSchema = new mongoose.Schema({
   updatedAt: { type: Date, default: Date.now }
 });
 
-swapRequestSchema.pre('save', function (next) {
+swapRequestSchema.pre('save', function () {
   this.updatedAt = Date.now();
-  next();
 });
 
 module.exports = mongoose.model('SwapRequest', swapRequestSchema);
