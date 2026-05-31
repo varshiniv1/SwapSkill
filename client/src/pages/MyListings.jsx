@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 import toast from 'react-hot-toast';
-import { LEVEL_COLORS, getCategoryLabel } from '../utils/constants';
+import { LEVEL_COLORS, getCategoryMeta } from '../utils/constants';
+import CategoryIcon from '../components/CategoryIcon';
 import { PlusCircle, Edit, Trash2, ToggleLeft, ToggleRight } from 'lucide-react';
 
 export default function MyListings() {
@@ -57,20 +58,21 @@ export default function MyListings() {
           {[...Array(3)].map((_, i) => <div key={i} className="bg-white rounded-2xl border border-slate-200 h-24 animate-pulse" />)}
         </div>
       ) : listings.length === 0 ? (
-        <div className="text-center py-16 bg-white rounded-2xl border border-slate-200">
-          <p className="text-4xl mb-4">📋</p>
-          <p className="text-slate-500 mb-4">You haven't posted any listings yet.</p>
-          <Link to="/listings/new" className="bg-violet-600 text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-violet-700 transition-colors">
+        <div className="text-center py-16 bg-white rounded-lg border border-slate-200">
+          <p className="text-slate-500 mb-4">No listings yet.</p>
+          <Link to="/listings/new" className="bg-violet-600 text-white px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-violet-700 transition-colors">
             Post your first listing
           </Link>
         </div>
       ) : (
         <div className="space-y-3">
           {listings.map((l) => {
-            const cat = getCategoryLabel(l.offerCategory);
+            const cat = getCategoryMeta(l.offerCategory);
             return (
-              <div key={l._id} className={`bg-white rounded-2xl border p-4 flex items-center gap-4 ${l.isActive ? 'border-slate-200' : 'border-slate-100 opacity-60'}`}>
-                <span className="text-2xl">{cat.emoji}</span>
+              <div key={l._id} className={`bg-white rounded-lg border p-4 flex items-center gap-4 ${l.isActive ? 'border-slate-200' : 'border-slate-100 opacity-60'}`}>
+                <div className="w-8 h-8 rounded-md bg-slate-100 flex items-center justify-center shrink-0">
+                  <CategoryIcon name={cat.icon} size={15} className="text-slate-500" />
+                </div>
                 <div className="flex-1 min-w-0">
                   <p className="font-semibold text-slate-800 truncate">{l.title}</p>
                   <div className="flex items-center gap-2 mt-0.5 flex-wrap">

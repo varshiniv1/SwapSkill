@@ -1,13 +1,37 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, Repeat2, Star, Shield, Zap } from 'lucide-react';
+import { ArrowRight, CheckCircle } from 'lucide-react';
 import { CATEGORIES } from '../utils/constants';
+import CategoryIcon from '../components/CategoryIcon';
 import { useAuth } from '../context/AuthContext';
 
 const steps = [
-  { step: '1', title: 'Sign up & pick skills', desc: 'Choose your skill categories — Dev, Design, Writing, Marketing and more.' },
-  { step: '2', title: 'Post a listing', desc: 'Tell the world what you offer and what you want back. Set your level and time estimate.' },
-  { step: '3', title: 'Browse & propose', desc: 'Find someone who has what you need. Send them a swap proposal in one click.' },
-  { step: '4', title: 'Agree & deliver', desc: 'Settle on scope and deadline, do the work, both mark done, then rate each other.' },
+  {
+    step: '01',
+    title: 'Create your profile',
+    desc: 'Sign up and select the skill categories that match your expertise.',
+  },
+  {
+    step: '02',
+    title: 'Post a listing',
+    desc: 'Describe what you offer, what you want in return, your level, and time estimate.',
+  },
+  {
+    step: '03',
+    title: 'Propose a swap',
+    desc: 'Browse listings and send a proposal to anyone whose skills you need.',
+  },
+  {
+    step: '04',
+    title: 'Deliver and rate',
+    desc: 'Agree on scope and deadline, complete the work, and build your reputation.',
+  },
+];
+
+const trustPoints = [
+  'No money changes hands — ever',
+  'Both parties agree on scope before work starts',
+  'Verified reputation through peer reviews',
+  'Cancel or decline any request freely',
 ];
 
 export default function Home() {
@@ -16,46 +40,55 @@ export default function Home() {
   return (
     <div className="flex flex-col">
       {/* Hero */}
-      <section className="bg-gradient-to-br from-violet-600 via-violet-700 to-indigo-700 text-white">
-        <div className="max-w-4xl mx-auto px-6 py-24 text-center">
-          <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 text-sm font-medium mb-6">
-            <Zap size={14} /> Free skill exchange — no money needed
+      <section className="bg-slate-900 text-white">
+        <div className="max-w-5xl mx-auto px-6 py-28 grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            <span className="inline-block text-xs font-semibold tracking-widest uppercase text-violet-400 mb-4">
+              Skill Exchange Platform
+            </span>
+            <h1 className="text-5xl font-bold leading-tight text-white mb-5">
+              Trade skills,<br />not dollars.
+            </h1>
+            <p className="text-slate-400 text-lg leading-relaxed mb-8">
+              SwapSkill connects professionals who want to exchange expertise directly.
+              No fees. No middlemen. Just pure value.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Link
+                to={user ? '/listings/new' : '/register'}
+                className="inline-flex items-center justify-center gap-2 bg-violet-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-violet-500 transition-colors"
+              >
+                {user ? 'Post a listing' : 'Get started'} <ArrowRight size={16} />
+              </Link>
+              <Link
+                to="/browse"
+                className="inline-flex items-center justify-center bg-slate-800 border border-slate-700 text-slate-300 font-semibold px-6 py-3 rounded-lg hover:bg-slate-700 transition-colors"
+              >
+                Browse listings
+              </Link>
+            </div>
           </div>
-          <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-6">
-            Trade skills,<br />not dollars
-          </h1>
-          <p className="text-lg text-violet-100 max-w-xl mx-auto mb-10">
-            SwapSkill connects people who want to exchange expertise. You build my website, I write your copy. Zero cost, pure value.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link
-              to={user ? '/listings/new' : '/register'}
-              className="bg-white text-violet-700 font-semibold px-8 py-3 rounded-xl hover:bg-violet-50 transition-colors flex items-center justify-center gap-2"
-            >
-              {user ? 'Post a listing' : 'Get started free'} <ArrowRight size={18} />
-            </Link>
-            <Link
-              to="/browse"
-              className="bg-white/10 border border-white/30 text-white font-semibold px-8 py-3 rounded-xl hover:bg-white/20 transition-colors"
-            >
-              Browse listings
-            </Link>
+          <div className="hidden md:flex flex-col gap-3">
+            {trustPoints.map((p) => (
+              <div key={p} className="flex items-center gap-3 bg-slate-800 rounded-lg px-4 py-3">
+                <CheckCircle size={16} className="text-violet-400 shrink-0" />
+                <span className="text-sm text-slate-300">{p}</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* How it works */}
-      <section className="max-w-5xl mx-auto px-6 py-20">
-        <h2 className="text-3xl font-bold text-center text-slate-800 mb-3">How it works</h2>
-        <p className="text-slate-500 text-center mb-12">Four simple steps to your first skill swap</p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <section className="max-w-5xl mx-auto px-6 py-20 w-full">
+        <p className="text-xs font-semibold tracking-widest uppercase text-violet-600 mb-2">Process</p>
+        <h2 className="text-3xl font-bold text-slate-800 mb-12">How it works</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {steps.map(({ step, title, desc }) => (
-            <div key={step} className="bg-white rounded-2xl border border-slate-200 p-6 text-center hover:shadow-md transition-shadow">
-              <div className="w-10 h-10 rounded-full bg-violet-100 text-violet-700 font-bold text-lg flex items-center justify-center mx-auto mb-4">
-                {step}
-              </div>
-              <h3 className="font-semibold text-slate-800 mb-2">{title}</h3>
-              <p className="text-sm text-slate-500">{desc}</p>
+            <div key={step} className="flex flex-col gap-4">
+              <span className="text-4xl font-bold text-slate-100">{step}</span>
+              <h3 className="font-semibold text-slate-800">{title}</h3>
+              <p className="text-sm text-slate-500 leading-relaxed">{desc}</p>
             </div>
           ))}
         </div>
@@ -64,46 +97,38 @@ export default function Home() {
       {/* Categories */}
       <section className="bg-slate-50 border-y border-slate-200">
         <div className="max-w-5xl mx-auto px-6 py-16">
-          <h2 className="text-3xl font-bold text-center text-slate-800 mb-3">Browse by category</h2>
-          <p className="text-slate-500 text-center mb-10">Whatever skill you need, find it here</p>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <p className="text-xs font-semibold tracking-widest uppercase text-violet-600 mb-2">Categories</p>
+          <h2 className="text-3xl font-bold text-slate-800 mb-10">Browse by skill area</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {CATEGORIES.map((cat) => (
               <Link
                 key={cat.value}
                 to={`/browse?category=${cat.value}`}
-                className="bg-white rounded-2xl border border-slate-200 p-5 text-center hover:border-violet-300 hover:shadow-md transition-all group"
+                className="group flex items-center gap-3 bg-white rounded-lg border border-slate-200 px-4 py-3.5 hover:border-violet-300 hover:shadow-sm transition-all"
               >
-                <div className="text-3xl mb-2">{cat.emoji}</div>
-                <p className="font-medium text-slate-700 group-hover:text-violet-600 transition-colors">{cat.label}</p>
+                <CategoryIcon name={cat.icon} size={16} className="text-slate-400 group-hover:text-violet-500 transition-colors" />
+                <span className="text-sm font-medium text-slate-700 group-hover:text-violet-600 transition-colors">
+                  {cat.label}
+                </span>
               </Link>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Trust badges */}
-      <section className="max-w-4xl mx-auto px-6 py-16 grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
-        {[
-          { icon: <Repeat2 size={28} className="text-violet-600" />, title: 'Fair exchange', desc: 'Both sides agree on scope before work begins.' },
-          { icon: <Star size={28} className="text-amber-400" />, title: 'Reputation system', desc: 'Ratings build trust. Great swappers rise to the top.' },
-          { icon: <Shield size={28} className="text-green-500" />, title: 'Always free', desc: 'No fees, no subscriptions, ever.' },
-        ].map(({ icon, title, desc }) => (
-          <div key={title} className="flex flex-col items-center gap-3">
-            {icon}
-            <h3 className="font-semibold text-slate-800">{title}</h3>
-            <p className="text-sm text-slate-500">{desc}</p>
-          </div>
-        ))}
-      </section>
-
       {/* CTA */}
       {!user && (
-        <section className="bg-violet-600 text-white">
-          <div className="max-w-2xl mx-auto px-6 py-16 text-center">
-            <h2 className="text-3xl font-bold mb-4">Ready to swap?</h2>
-            <p className="text-violet-100 mb-8">Join a community of makers, builders, and creators exchanging skills every day.</p>
-            <Link to="/register" className="bg-white text-violet-700 font-semibold px-8 py-3 rounded-xl hover:bg-violet-50 transition-colors inline-flex items-center gap-2">
-              Create your free account <ArrowRight size={18} />
+        <section className="max-w-5xl mx-auto px-6 py-20 w-full">
+          <div className="bg-violet-600 rounded-2xl px-8 py-12 text-center text-white">
+            <h2 className="text-3xl font-bold mb-3">Ready to start swapping?</h2>
+            <p className="text-violet-200 mb-8 max-w-md mx-auto">
+              Join professionals exchanging skills every day. Free to join, free to use.
+            </p>
+            <Link
+              to="/register"
+              className="inline-flex items-center gap-2 bg-white text-violet-700 font-semibold px-6 py-3 rounded-lg hover:bg-violet-50 transition-colors"
+            >
+              Create your account <ArrowRight size={16} />
             </Link>
           </div>
         </section>

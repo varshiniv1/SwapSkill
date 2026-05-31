@@ -1,34 +1,34 @@
 export const CATEGORIES = [
-  { value: 'dev', label: 'Development', emoji: '💻' },
-  { value: 'design', label: 'Design', emoji: '🎨' },
-  { value: 'writing', label: 'Writing', emoji: '✍️' },
-  { value: 'marketing', label: 'Marketing', emoji: '📣' },
-  { value: 'video', label: 'Video & Audio', emoji: '🎬' },
-  { value: 'data', label: 'Data & AI', emoji: '📊' },
-  { value: 'business', label: 'Business', emoji: '💼' },
-  { value: 'other', label: 'Other', emoji: '🌟' },
+  { value: 'dev',       label: 'Development',  icon: 'Code2'      },
+  { value: 'design',    label: 'Design',        icon: 'Palette'    },
+  { value: 'writing',   label: 'Writing',       icon: 'PenLine'    },
+  { value: 'marketing', label: 'Marketing',     icon: 'Megaphone'  },
+  { value: 'video',     label: 'Video & Audio', icon: 'Video'      },
+  { value: 'data',      label: 'Data & AI',     icon: 'BarChart2'  },
+  { value: 'business',  label: 'Business',      icon: 'Briefcase'  },
+  { value: 'other',     label: 'Other',         icon: 'Layers'     },
 ];
 
 export const LEVELS = [
   { value: 'beginner', label: 'Beginner' },
-  { value: 'mid', label: 'Mid-level' },
-  { value: 'expert', label: 'Expert' },
+  { value: 'mid',      label: 'Mid-level' },
+  { value: 'expert',   label: 'Expert'   },
 ];
 
 export const LEVEL_COLORS = {
-  beginner: 'bg-green-100 text-green-700',
-  mid: 'bg-blue-100 text-blue-700',
-  expert: 'bg-purple-100 text-purple-700',
+  beginner: 'bg-emerald-50 text-emerald-700',
+  mid:      'bg-blue-50   text-blue-700',
+  expert:   'bg-violet-50 text-violet-700',
 };
 
 export const STATUS_COLORS = {
-  pending: 'bg-yellow-100 text-yellow-700',
-  accepted: 'bg-blue-100 text-blue-700',
-  countered: 'bg-orange-100 text-orange-700',
-  declined: 'bg-red-100 text-red-700',
-  completed: 'bg-green-100 text-green-700',
-  cancelled: 'bg-gray-100 text-gray-500',
+  pending:   'bg-amber-50   text-amber-700',
+  accepted:  'bg-blue-50    text-blue-700',
+  countered: 'bg-orange-50  text-orange-700',
+  declined:  'bg-red-50     text-red-600',
+  completed: 'bg-emerald-50 text-emerald-700',
+  cancelled: 'bg-slate-100  text-slate-500',
 };
 
-export const getCategoryLabel = (val) =>
-  CATEGORIES.find((c) => c.value === val) || { label: val, emoji: '🌟' };
+export const getCategoryMeta = (val) =>
+  CATEGORIES.find((c) => c.value === val) || { label: val, icon: 'Layers' };

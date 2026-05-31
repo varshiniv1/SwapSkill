@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import api from '../api/axios';
 import toast from 'react-hot-toast';
 import { CATEGORIES, LEVELS } from '../utils/constants';
+import CategoryIcon from '../components/CategoryIcon';
 import { Plus, X, ArrowLeft } from 'lucide-react';
 
 export default function CreateListing() {
@@ -109,21 +110,24 @@ export default function CreateListing() {
         <div>
           <label className="text-sm font-medium text-slate-700">Skill category *</label>
           <div className="grid grid-cols-4 gap-2 mt-2">
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat.value}
-                type="button"
-                onClick={() => setForm({ ...form, offerCategory: cat.value })}
-                className={`flex flex-col items-center gap-1 py-2 rounded-xl border-2 text-xs font-medium transition-all ${
-                  form.offerCategory === cat.value
-                    ? 'border-violet-500 bg-violet-50 text-violet-700'
-                    : 'border-slate-200 text-slate-500 hover:border-violet-200'
-                }`}
-              >
-                <span className="text-base">{cat.emoji}</span>
-                {cat.label}
-              </button>
-            ))}
+            {CATEGORIES.map((cat) => {
+              const selected = form.offerCategory === cat.value;
+              return (
+                <button
+                  key={cat.value}
+                  type="button"
+                  onClick={() => setForm({ ...form, offerCategory: cat.value })}
+                  className={`flex flex-col items-center gap-1.5 py-2.5 rounded-lg border-2 text-xs font-medium transition-all ${
+                    selected
+                      ? 'border-violet-500 bg-violet-50 text-violet-700'
+                      : 'border-slate-200 text-slate-500 hover:border-slate-300'
+                  }`}
+                >
+                  <CategoryIcon name={cat.icon} size={15} className={selected ? 'text-violet-600' : 'text-slate-400'} />
+                  {cat.label}
+                </button>
+              );
+            })}
           </div>
         </div>
 

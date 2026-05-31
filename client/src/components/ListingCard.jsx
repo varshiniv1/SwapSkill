@@ -1,57 +1,56 @@
 import { Link } from 'react-router-dom';
-import { Clock, ArrowRight } from 'lucide-react';
+import { Clock } from 'lucide-react';
 import StarRating from './StarRating';
-import { LEVEL_COLORS, getCategoryLabel } from '../utils/constants';
+import CategoryIcon from './CategoryIcon';
+import { LEVEL_COLORS, getCategoryMeta } from '../utils/constants';
 
 export default function ListingCard({ listing }) {
   const { _id, title, offerSkill, offerCategory, offerLevel, wantSkills, timeEstimate, user } = listing;
-  const cat = getCategoryLabel(offerCategory);
+  const cat = getCategoryMeta(offerCategory);
 
   return (
     <Link
       to={`/listings/${_id}`}
-      className="group bg-white rounded-2xl border border-slate-200 p-5 hover:shadow-lg hover:border-violet-200 transition-all flex flex-col gap-3"
+      className="group flex flex-col bg-white rounded-xl border border-slate-200 p-5 hover:border-violet-300 hover:shadow-sm transition-all gap-4"
     >
-      {/* Header */}
-      <div className="flex items-start justify-between gap-2">
-        <div className="flex items-center gap-2">
-          <span className="text-xl">{cat.emoji}</span>
-          <span className="text-xs font-medium text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">
-            {cat.label}
-          </span>
+      {/* Category + level row */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-1.5 text-xs font-medium text-slate-500">
+          <CategoryIcon name={cat.icon} size={13} className="text-slate-400" />
+          {cat.label}
         </div>
-        <span className={`text-xs font-medium px-2 py-0.5 rounded-full capitalize ${LEVEL_COLORS[offerLevel]}`}>
+        <span className={`text-xs font-medium px-2 py-0.5 rounded capitalize ${LEVEL_COLORS[offerLevel]}`}>
           {offerLevel}
         </span>
       </div>
 
-      {/* Title + Offer */}
+      {/* Title + offer */}
       <div>
-        <h3 className="font-semibold text-slate-800 group-hover:text-violet-600 transition-colors line-clamp-2">
+        <h3 className="font-semibold text-slate-800 group-hover:text-violet-600 transition-colors line-clamp-2 mb-1">
           {title}
         </h3>
-        <p className="text-sm text-slate-500 mt-1">
-          Offering: <span className="font-medium text-slate-700">{offerSkill}</span>
+        <p className="text-xs text-slate-400">
+          Offering <span className="font-medium text-slate-600">{offerSkill}</span>
         </p>
       </div>
 
       {/* Wants */}
-      <div className="flex flex-wrap gap-1.5">
+      <div className="flex flex-wrap gap-1.5 items-center">
         <span className="text-xs text-slate-400">Wants:</span>
         {wantSkills.slice(0, 3).map((s, i) => (
-          <span key={i} className="text-xs bg-violet-50 text-violet-700 px-2 py-0.5 rounded-full">
+          <span key={i} className="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded">
             {s}
           </span>
         ))}
         {wantSkills.length > 3 && (
-          <span className="text-xs text-slate-400">+{wantSkills.length - 3}</span>
+          <span className="text-xs text-slate-400">+{wantSkills.length - 3} more</span>
         )}
       </div>
 
       {/* Footer */}
-      <div className="flex items-center justify-between mt-auto pt-2 border-t border-slate-100">
+      <div className="flex items-center justify-between pt-3 border-t border-slate-100 mt-auto">
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-full bg-violet-100 flex items-center justify-center text-violet-700 text-xs font-bold">
+          <div className="w-6 h-6 rounded-full bg-violet-100 flex items-center justify-center text-violet-700 text-xs font-semibold">
             {user?.name?.[0]?.toUpperCase()}
           </div>
           <div>

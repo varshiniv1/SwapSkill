@@ -37,13 +37,6 @@ export default function App() {
           </Routes>
         </main>
 
-        {/* Footer */}
-        <footer className="border-t border-slate-200 bg-white mt-auto">
-          <div className="max-w-6xl mx-auto px-4 py-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-sm text-slate-400">
-            <p>© 2025 SwapSkill — free forever</p>
-            <p>Built with MERN stack</p>
-          </div>
-        </footer>
       </AuthProvider>
     </BrowserRouter>
   );

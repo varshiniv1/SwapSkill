@@ -4,7 +4,8 @@ import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
 import StarRating from '../components/StarRating';
 import ListingCard from '../components/ListingCard';
-import { getCategoryLabel } from '../utils/constants';
+import { getCategoryMeta } from '../utils/constants';
+import CategoryIcon from '../components/CategoryIcon';
 import { Edit } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -110,10 +111,11 @@ export default function Profile() {
         {profile.categories?.length > 0 && (
           <div className="flex flex-wrap gap-2 mt-4">
             {profile.categories.map((c) => {
-              const cat = getCategoryLabel(c);
+              const cat = getCategoryMeta(c);
               return (
-                <span key={c} className="flex items-center gap-1 text-xs bg-slate-100 text-slate-600 px-2.5 py-1 rounded-full">
-                  {cat.emoji} {cat.label}
+                <span key={c} className="flex items-center gap-1.5 text-xs bg-slate-100 text-slate-600 px-2.5 py-1 rounded">
+                  <CategoryIcon name={cat.icon} size={11} className="text-slate-400" />
+                  {cat.label}
                 </span>
               );
             })}

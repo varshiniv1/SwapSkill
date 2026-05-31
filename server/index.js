@@ -5,8 +5,22 @@ const cors = require('cors');
 
 const app = express();
 
-// Middleware
-app.use(cors({ origin: process.env.CLIENT_URL || 'http://localhost:5173', credentials: true }));
+// CORS — allow localhost in dev, explicit CLIENT_URL, and all Vercel preview deployments
+const allowedOrigins = [
+  'http://localhost:5173',
+  process.env.CLIENT_URL,
+].filter(Boolean);
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true); // server-to-server / curl
+    const allowed =
+      allowedOrigins.includes(origin) ||
+      /\.vercel\.app$/.test(origin);
+    callback(allowed ? null : new Error('CORS: origin not allowed'), allowed);
+  },
+  credentials: true,
+}));
 app.use(express.json());
 
 // Routes

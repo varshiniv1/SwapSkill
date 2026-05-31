@@ -4,7 +4,8 @@ import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 import StarRating from '../components/StarRating';
-import { LEVEL_COLORS, getCategoryLabel } from '../utils/constants';
+import { LEVEL_COLORS, getCategoryMeta } from '../utils/constants';
+import CategoryIcon from '../components/CategoryIcon';
 import { Clock, ArrowLeft, Trash2, Edit, Send } from 'lucide-react';
 
 export default function ListingDetail() {
@@ -56,7 +57,7 @@ export default function ListingDetail() {
   if (!listing) return null;
 
   const isOwner = user?._id === listing.user._id;
-  const cat = getCategoryLabel(listing.offerCategory);
+  const cat = getCategoryMeta(listing.offerCategory);
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
@@ -67,8 +68,9 @@ export default function ListingDetail() {
       <div className="bg-white rounded-2xl border border-slate-200 p-8">
         {/* Category + level */}
         <div className="flex flex-wrap items-center gap-2 mb-4">
-          <span className="flex items-center gap-1.5 text-sm font-medium bg-slate-100 text-slate-600 px-3 py-1 rounded-full">
-            {cat.emoji} {cat.label}
+          <span className="flex items-center gap-1.5 text-sm font-medium bg-slate-100 text-slate-600 px-3 py-1 rounded">
+            <CategoryIcon name={cat.icon} size={13} className="text-slate-400" />
+            {cat.label}
           </span>
           <span className={`text-sm font-medium px-3 py-1 rounded-full capitalize ${LEVEL_COLORS[listing.offerLevel]}`}>
             {listing.offerLevel}
