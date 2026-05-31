@@ -25,36 +25,30 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] bg-slate-50 flex items-center justify-center px-4 py-16">
-      <div className="w-full max-w-sm">
+    <div style={{ minHeight: 'calc(100vh - 4rem)', background: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '3rem 1rem' }}>
+      <div style={{ width: '100%', maxWidth: '22rem' }}>
 
-        {/* Logo */}
-        <Link to="/" className="flex items-center justify-center gap-2 mb-8">
-          <Repeat2 size={22} className="text-violet-600" />
-          <span className="font-bold text-lg text-slate-800">SwapSkill</span>
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', marginBottom: '2rem', textDecoration: 'none' }}>
+          <Repeat2 size={20} style={{ color: '#7c3aed' }} />
+          <span style={{ fontWeight: 700, fontSize: '1.1rem', color: '#1e293b' }}>SwapSkill</span>
         </Link>
 
-        {/* Card */}
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 px-8 py-8">
-          <h1 className="text-xl font-bold text-slate-900 mb-1">Welcome back</h1>
-          <p className="text-sm text-slate-500 mb-7">Log in to your account</p>
+        <div className="auth-card">
+          <h1 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#0f172a', marginBottom: '0.25rem' }}>Welcome back</h1>
+          <p style={{ fontSize: '0.875rem', color: '#64748b', marginBottom: '1.75rem' }}>Sign in to your account</p>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Email */}
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">
+              <label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 600, color: '#374151', marginBottom: '0.375rem' }}>
                 Email address
               </label>
-              <div className="relative">
-                <Mail size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+              <div style={{ position: 'relative' }}>
+                <Mail size={14} style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8', pointerEvents: 'none' }} />
                 <input
                   type="email"
                   required
                   autoComplete="email"
-                  className="w-full pl-10 pr-4 py-2.5 text-sm bg-white border border-slate-300 rounded-lg
-                             placeholder:text-slate-400 text-slate-900
-                             focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-violet-500
-                             transition-colors"
+                  className="field"
                   placeholder="you@example.com"
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
@@ -62,21 +56,17 @@ export default function Login() {
               </div>
             </div>
 
-            {/* Password */}
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">
+              <label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 600, color: '#374151', marginBottom: '0.375rem' }}>
                 Password
               </label>
-              <div className="relative">
-                <Lock size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+              <div style={{ position: 'relative' }}>
+                <Lock size={14} style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8', pointerEvents: 'none' }} />
                 <input
                   type="password"
                   required
                   autoComplete="current-password"
-                  className="w-full pl-10 pr-4 py-2.5 text-sm bg-white border border-slate-300 rounded-lg
-                             placeholder:text-slate-400 text-slate-900
-                             focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-violet-500
-                             transition-colors"
+                  className="field"
                   placeholder="Your password"
                   value={form.password}
                   onChange={(e) => setForm({ ...form, password: e.target.value })}
@@ -84,20 +74,15 @@ export default function Login() {
               </div>
             </div>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-violet-600 hover:bg-violet-700 disabled:opacity-60
-                         text-white font-semibold py-2.5 rounded-lg transition-colors mt-2"
-            >
+            <button type="submit" className="btn-primary" disabled={loading} style={{ marginTop: '0.25rem' }}>
               {loading ? 'Signing in…' : 'Sign in'}
             </button>
           </form>
         </div>
 
-        <p className="text-center text-sm text-slate-500 mt-5">
+        <p style={{ textAlign: 'center', fontSize: '0.875rem', color: '#64748b', marginTop: '1.25rem' }}>
           Don't have an account?{' '}
-          <Link to="/register" className="text-violet-600 font-semibold hover:underline">
+          <Link to="/register" style={{ color: '#7c3aed', fontWeight: 600, textDecoration: 'none' }}>
             Create one free
           </Link>
         </p>

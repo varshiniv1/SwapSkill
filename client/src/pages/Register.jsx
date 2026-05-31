@@ -11,68 +11,64 @@ export default function Register() {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [form, setForm] = useState({
-    name: '', email: '', password: '', bio: '', categories: [],
-  });
+  const [form, setForm] = useState({ name: '', email: '', password: '', bio: '', categories: [] });
 
-  const toggleCategory = (val) =>
-    setForm((prev) => ({
-      ...prev,
-      categories: prev.categories.includes(val)
-        ? prev.categories.filter((c) => c !== val)
-        : [...prev.categories, val],
+  const toggle = (val) =>
+    setForm((p) => ({
+      ...p,
+      categories: p.categories.includes(val) ? p.categories.filter((c) => c !== val) : [...p.categories, val],
     }));
 
   const handleStep1 = (e) => {
     e.preventDefault();
-    if (!form.name.trim() || !form.email.trim() || !form.password)
-      return toast.error('Please fill in all required fields.');
-    if (form.password.length < 6)
-      return toast.error('Password must be at least 6 characters.');
+    if (!form.name.trim() || !form.email.trim() || !form.password) return toast.error('Please fill in all required fields.');
+    if (form.password.length < 6) return toast.error('Password must be at least 6 characters.');
     setStep(2);
   };
 
   const handleSubmit = async () => {
-    if (form.categories.length === 0)
-      return toast.error('Select at least one skill category.');
+    if (!form.categories.length) return toast.error('Select at least one skill category.');
     setLoading(true);
     try {
       await register(form);
       toast.success('Account created. Welcome!');
       navigate('/browse');
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Registration failed. Try again.');
-    } finally {
-      setLoading(false);
-    }
+      toast.error(err.response?.data?.message || 'Registration failed.');
+    } finally { setLoading(false); }
   };
 
-  return (
-    <div className="min-h-[calc(100vh-4rem)] bg-slate-50 flex items-center justify-center px-4 py-16">
-      <div className="w-full max-w-md">
+  const inputIcon = (Icon) => (
+    <Icon size={14} style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8', pointerEvents: 'none' }} />
+  );
 
-        {/* Logo */}
-        <Link to="/" className="flex items-center justify-center gap-2 mb-8">
-          <Repeat2 size={22} className="text-violet-600" />
-          <span className="font-bold text-lg text-slate-800">SwapSkill</span>
+  return (
+    <div style={{ minHeight: 'calc(100vh - 4rem)', background: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '3rem 1rem' }}>
+      <div style={{ width: '100%', maxWidth: '26rem' }}>
+
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', marginBottom: '2rem', textDecoration: 'none' }}>
+          <Repeat2 size={20} style={{ color: '#7c3aed' }} />
+          <span style={{ fontWeight: 700, fontSize: '1.1rem', color: '#1e293b' }}>SwapSkill</span>
         </Link>
 
-        {/* Card */}
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 px-8 py-8">
+        <div className="auth-card">
 
           {/* Step indicator */}
-          <div className="flex items-center gap-2 mb-7">
-            {[
-              { n: 1, label: 'Your details'   },
-              { n: 2, label: 'Skill areas'    },
-            ].map(({ n, label }, i, arr) => (
-              <div key={n} className="flex items-center gap-2">
-                <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-semibold transition-colors ${
-                  step >= n ? 'bg-violet-600 text-white' : 'bg-slate-100 text-slate-400'
-                }`}>{n}</div>
-                <span className={`text-xs font-medium ${step === n ? 'text-slate-700' : 'text-slate-400'}`}>{label}</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.75rem' }}>
+            {[{ n: 1, label: 'Your details' }, { n: 2, label: 'Skill areas' }].map(({ n, label }, i, arr) => (
+              <div key={n} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <div style={{
+                  width: '1.5rem', height: '1.5rem', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: '0.75rem', fontWeight: 700,
+                  background: step >= n ? '#7c3aed' : '#f1f5f9',
+                  color: step >= n ? '#fff' : '#94a3b8',
+                  transition: 'background 0.2s',
+                }}>
+                  {n}
+                </div>
+                <span style={{ fontSize: '0.75rem', fontWeight: 500, color: step === n ? '#374151' : '#94a3b8' }}>{label}</span>
                 {i < arr.length - 1 && (
-                  <div className={`h-px w-6 mx-1 rounded ${step > n ? 'bg-violet-500' : 'bg-slate-200'}`} />
+                  <div style={{ height: '1px', width: '1.5rem', background: step > n ? '#7c3aed' : '#e2e8f0', margin: '0 0.25rem' }} />
                 )}
               </div>
             ))}
@@ -80,147 +76,94 @@ export default function Register() {
 
           {step === 1 ? (
             <>
-              <h1 className="text-xl font-bold text-slate-900 mb-1">Create your account</h1>
-              <p className="text-sm text-slate-500 mb-7">Free forever. No credit card required.</p>
+              <h1 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#0f172a', marginBottom: '0.25rem' }}>Create your account</h1>
+              <p style={{ fontSize: '0.875rem', color: '#64748b', marginBottom: '1.75rem' }}>Free forever. No credit card required.</p>
 
-              <form onSubmit={handleStep1} className="space-y-5">
+              <form onSubmit={handleStep1} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1.5">Full name</label>
-                  <div className="relative">
-                    <User size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
-                    <input
-                      type="text"
-                      required
-                      className="w-full pl-10 pr-4 py-2.5 text-sm bg-white border border-slate-300 rounded-lg
-                                 placeholder:text-slate-400 text-slate-900
-                                 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-violet-500 transition-colors"
-                      placeholder="Jane Doe"
-                      value={form.name}
-                      onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    />
+                  <label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 600, color: '#374151', marginBottom: '0.375rem' }}>Full name</label>
+                  <div style={{ position: 'relative' }}>{inputIcon(User)}
+                    <input type="text" required className="field" placeholder="Jane Doe" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
                   </div>
                 </div>
-
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1.5">Email address</label>
-                  <div className="relative">
-                    <Mail size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
-                    <input
-                      type="email"
-                      required
-                      autoComplete="email"
-                      className="w-full pl-10 pr-4 py-2.5 text-sm bg-white border border-slate-300 rounded-lg
-                                 placeholder:text-slate-400 text-slate-900
-                                 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-violet-500 transition-colors"
-                      placeholder="you@example.com"
-                      value={form.email}
-                      onChange={(e) => setForm({ ...form, email: e.target.value })}
-                    />
+                  <label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 600, color: '#374151', marginBottom: '0.375rem' }}>Email address</label>
+                  <div style={{ position: 'relative' }}>{inputIcon(Mail)}
+                    <input type="email" required autoComplete="email" className="field" placeholder="you@example.com" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
                   </div>
                 </div>
-
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1.5">Password</label>
-                  <div className="relative">
-                    <Lock size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
-                    <input
-                      type="password"
-                      required
-                      autoComplete="new-password"
-                      className="w-full pl-10 pr-4 py-2.5 text-sm bg-white border border-slate-300 rounded-lg
-                                 placeholder:text-slate-400 text-slate-900
-                                 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-violet-500 transition-colors"
-                      placeholder="Minimum 6 characters"
-                      value={form.password}
-                      onChange={(e) => setForm({ ...form, password: e.target.value })}
-                    />
+                  <label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 600, color: '#374151', marginBottom: '0.375rem' }}>Password</label>
+                  <div style={{ position: 'relative' }}>{inputIcon(Lock)}
+                    <input type="password" required autoComplete="new-password" className="field" placeholder="Minimum 6 characters" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} />
                   </div>
                 </div>
-
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1.5">
-                    Bio <span className="text-slate-400 font-normal">(optional)</span>
+                  <label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 600, color: '#374151', marginBottom: '0.375rem' }}>
+                    Bio <span style={{ fontWeight: 400, color: '#94a3b8' }}>(optional)</span>
                   </label>
-                  <div className="relative">
-                    <FileText size={15} className="absolute left-3.5 top-3 text-slate-400 pointer-events-none" />
-                    <textarea
-                      rows={2}
-                      className="w-full pl-10 pr-4 py-2.5 text-sm bg-white border border-slate-300 rounded-lg
-                                 placeholder:text-slate-400 text-slate-900 resize-none
-                                 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-violet-500 transition-colors"
-                      placeholder="A short description of your background..."
-                      value={form.bio}
-                      onChange={(e) => setForm({ ...form, bio: e.target.value })}
-                    />
+                  <div style={{ position: 'relative' }}>
+                    <FileText size={14} style={{ position: 'absolute', left: '0.75rem', top: '0.75rem', color: '#94a3b8', pointerEvents: 'none' }} />
+                    <textarea className="field" rows={2} placeholder="A short description of your background..." value={form.bio} onChange={(e) => setForm({ ...form, bio: e.target.value })} />
                   </div>
                 </div>
-
-                <button
-                  type="submit"
-                  className="w-full bg-violet-600 hover:bg-violet-700 text-white font-semibold py-2.5 rounded-lg transition-colors mt-1"
-                >
-                  Continue →
-                </button>
+                <button type="submit" className="btn-primary" style={{ marginTop: '0.25rem' }}>Continue →</button>
               </form>
             </>
           ) : (
             <>
-              <h1 className="text-xl font-bold text-slate-900 mb-1">Your skill areas</h1>
-              <p className="text-sm text-slate-500 mb-6">Select all categories that apply to your work.</p>
+              <h1 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#0f172a', marginBottom: '0.25rem' }}>Your skill areas</h1>
+              <p style={{ fontSize: '0.875rem', color: '#64748b', marginBottom: '1.5rem' }}>Select all categories that apply to your work.</p>
 
-              <div className="grid grid-cols-2 gap-2.5 mb-7">
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.625rem', marginBottom: '1.75rem' }}>
                 {CATEGORIES.map((cat) => {
-                  const selected = form.categories.includes(cat.value);
+                  const sel = form.categories.includes(cat.value);
                   return (
                     <button
                       key={cat.value}
                       type="button"
-                      onClick={() => toggleCategory(cat.value)}
-                      className={`flex items-center gap-2.5 px-3.5 py-3 rounded-lg border-2 text-sm font-medium transition-all text-left ${
-                        selected
-                          ? 'border-violet-500 bg-violet-50 text-violet-700'
-                          : 'border-slate-200 text-slate-600 hover:border-slate-300 bg-white'
-                      }`}
+                      onClick={() => toggle(cat.value)}
+                      style={{
+                        display: 'flex', alignItems: 'center', gap: '0.625rem',
+                        padding: '0.75rem 1rem', borderRadius: '0.5rem', textAlign: 'left',
+                        border: sel ? '2px solid #7c3aed' : '2px solid #e2e8f0',
+                        background: sel ? '#f5f3ff' : '#fff',
+                        color: sel ? '#5b21b6' : '#475569',
+                        fontWeight: 500, fontSize: '0.8125rem', cursor: 'pointer',
+                        transition: 'border-color 0.15s, background 0.15s',
+                      }}
                     >
-                      <CategoryIcon
-                        name={cat.icon}
-                        size={15}
-                        className={selected ? 'text-violet-600 shrink-0' : 'text-slate-400 shrink-0'}
-                      />
+                      <CategoryIcon name={cat.icon} size={14} className={sel ? 'text-violet-600' : 'text-slate-400'} />
                       {cat.label}
                     </button>
                   );
                 })}
               </div>
 
-              <div className="flex gap-2.5">
+              <div style={{ display: 'flex', gap: '0.625rem' }}>
                 <button
                   type="button"
                   onClick={() => setStep(1)}
-                  className="flex-1 border border-slate-300 text-slate-600 font-medium py-2.5 rounded-lg hover:bg-slate-50 transition-colors text-sm"
+                  style={{ flex: 1, padding: '0.7rem', fontSize: '0.875rem', fontWeight: 600, color: '#475569', background: '#fff', border: '1.5px solid #cbd5e1', borderRadius: '0.5rem', cursor: 'pointer', transition: 'background 0.15s' }}
                 >
-                  Back
+                  ← Back
                 </button>
                 <button
                   onClick={handleSubmit}
                   disabled={loading}
-                  className="flex-2 flex-1 bg-violet-600 hover:bg-violet-700 disabled:opacity-60
-                             text-white font-semibold py-2.5 rounded-lg transition-colors text-sm"
+                  className="btn-primary"
+                  style={{ flex: 1, width: 'auto' }}
                 >
-                  {loading ? 'Creating account…' : 'Create account'}
+                  {loading ? 'Creating…' : 'Create account'}
                 </button>
               </div>
             </>
           )}
         </div>
 
-        <p className="text-center text-sm text-slate-500 mt-5">
-          {step === 1 ? 'Already have an account? ' : ''}
-          {step === 1 && (
-            <Link to="/login" className="text-violet-600 font-semibold hover:underline">
-              Sign in
-            </Link>
-          )}
+        <p style={{ textAlign: 'center', fontSize: '0.875rem', color: '#64748b', marginTop: '1.25rem' }}>
+          Already have an account?{' '}
+          <Link to="/login" style={{ color: '#7c3aed', fontWeight: 600, textDecoration: 'none' }}>Sign in</Link>
         </p>
       </div>
     </div>

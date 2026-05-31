@@ -8,10 +8,10 @@ const steps = [
   { step: '01', title: 'Create your profile',  desc: 'Sign up and select the skill categories that match your expertise.' },
   { step: '02', title: 'Post a listing',        desc: 'Describe what you offer, what you want in return, your level, and time estimate.' },
   { step: '03', title: 'Propose a swap',        desc: 'Browse listings and send a proposal to anyone whose skills you need.' },
-  { step: '04', title: 'Deliver and rate',      desc: 'Agree on scope and deadline, complete the work, and build your reputation.' },
+  { step: '04', title: 'Deliver and rate',      desc: 'Complete the work, both sides confirm done, then rate each other.' },
 ];
 
-const trustPoints = [
+const trust = [
   'No money changes hands — ever',
   'Both parties agree on scope before work starts',
   'Verified reputation through peer reviews',
@@ -22,112 +22,109 @@ export default function Home() {
   const { user } = useAuth();
 
   return (
-    <div className="flex flex-col">
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
 
-      {/* ── Hero ─────────────────────────────────────────── */}
-      <section className="bg-slate-900 text-white">
-        <div className="max-w-5xl mx-auto px-8 py-24 grid md:grid-cols-2 gap-16 items-center">
-          <div>
-            <span className="inline-block text-xs font-semibold tracking-widest uppercase text-violet-400 mb-5">
-              Skill Exchange Platform
-            </span>
-            <h1 className="text-4xl md:text-5xl font-bold leading-tight text-white mb-6">
-              Trade skills,<br />not dollars.
-            </h1>
-            <p className="text-slate-400 text-base leading-relaxed mb-10">
-              SwapSkill connects professionals who want to exchange expertise directly.
-              No fees. No middlemen. Just pure value.
-            </p>
-            <div className="flex flex-wrap gap-3">
-              <Link
-                to={user ? '/listings/new' : '/register'}
-                className="inline-flex items-center gap-2 bg-violet-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-violet-500 transition-colors"
-              >
-                {user ? 'Post a listing' : 'Get started'} <ArrowRight size={16} />
-              </Link>
-              <Link
-                to="/browse"
-                className="inline-flex items-center bg-slate-800 border border-slate-700 text-slate-300 font-semibold px-6 py-3 rounded-lg hover:bg-slate-700 transition-colors"
-              >
-                Browse listings
-              </Link>
+      {/* ── Hero ─────────────────────────── */}
+      <section style={{ background: '#0f172a', color: '#fff' }}>
+        <div className="section-wrap">
+          <div className="inner" style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '3rem', alignItems: 'center' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem', alignItems: 'center' }}>
+              <div>
+                <span style={{ display: 'inline-block', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#a78bfa', marginBottom: '1.25rem' }}>
+                  Skill Exchange Platform
+                </span>
+                <h1 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 800, lineHeight: 1.15, color: '#f8fafc', marginBottom: '1.25rem' }}>
+                  Trade skills,<br />not dollars.
+                </h1>
+                <p style={{ fontSize: '1rem', color: '#94a3b8', lineHeight: 1.7, marginBottom: '2rem', maxWidth: '28rem' }}>
+                  SwapSkill connects professionals who want to exchange expertise directly.
+                  No fees. No middlemen. Just pure value.
+                </p>
+                <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+                  <Link to={user ? '/listings/new' : '/register'}
+                    style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: '#7c3aed', color: '#fff', fontWeight: 600, padding: '0.75rem 1.5rem', borderRadius: '0.5rem', textDecoration: 'none', fontSize: '0.9rem' }}>
+                    {user ? 'Post a listing' : 'Get started'} <ArrowRight size={16} />
+                  </Link>
+                  <Link to="/browse"
+                    style={{ display: 'inline-flex', alignItems: 'center', background: 'transparent', color: '#cbd5e1', fontWeight: 600, padding: '0.75rem 1.5rem', borderRadius: '0.5rem', textDecoration: 'none', border: '1.5px solid #334155', fontSize: '0.9rem' }}>
+                    Browse listings
+                  </Link>
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
+                {trust.map((p) => (
+                  <div key={p} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', background: '#1e293b', borderRadius: '0.5rem', padding: '0.875rem 1rem' }}>
+                    <CheckCircle size={15} style={{ color: '#a78bfa', flexShrink: 0 }} />
+                    <span style={{ fontSize: '0.875rem', color: '#cbd5e1' }}>{p}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
+        </div>
+      </section>
 
-          <div className="hidden md:flex flex-col gap-3">
-            {trustPoints.map((p) => (
-              <div key={p} className="flex items-center gap-3 bg-slate-800 rounded-lg px-4 py-3.5">
-                <CheckCircle size={15} className="text-violet-400 shrink-0" />
-                <span className="text-sm text-slate-300">{p}</span>
-              </div>
-            ))}
+      {/* ── How it works ─────────────────── */}
+      <section style={{ background: '#fff', borderBottom: '1px solid #f1f5f9' }}>
+        <div className="section-wrap">
+          <div className="inner">
+            <p style={{ fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#7c3aed', marginBottom: '0.5rem' }}>Process</p>
+            <h2 style={{ fontSize: '1.75rem', fontWeight: 700, color: '#0f172a', marginBottom: '3.5rem' }}>How it works</h2>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '2.5rem' }}>
+              {steps.map(({ step, title, desc }) => (
+                <div key={step} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                  <span style={{ fontSize: '2rem', fontWeight: 800, color: '#e2e8f0', lineHeight: 1 }}>{step}</span>
+                  <h3 style={{ fontSize: '0.9375rem', fontWeight: 600, color: '#0f172a' }}>{title}</h3>
+                  <p style={{ fontSize: '0.875rem', color: '#64748b', lineHeight: 1.65 }}>{desc}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ── How it works ─────────────────────────────────── */}
-      <section className="bg-white border-b border-slate-100">
-        <div className="max-w-5xl mx-auto px-8 py-20">
-          <p className="text-xs font-semibold tracking-widest uppercase text-violet-600 mb-2">Process</p>
-          <h2 className="text-2xl font-bold text-slate-800 mb-14">How it works</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
-            {steps.map(({ step, title, desc }) => (
-              <div key={step} className="flex flex-col gap-3">
-                <span className="text-3xl font-bold text-slate-200 select-none">{step}</span>
-                <h3 className="font-semibold text-slate-800">{title}</h3>
-                <p className="text-sm text-slate-500 leading-relaxed">{desc}</p>
-              </div>
-            ))}
+      {/* ── Categories ───────────────────── */}
+      <section style={{ background: '#f8fafc', borderBottom: '1px solid #f1f5f9' }}>
+        <div className="section-wrap">
+          <div className="inner">
+            <p style={{ fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#7c3aed', marginBottom: '0.5rem' }}>Categories</p>
+            <h2 style={{ fontSize: '1.75rem', fontWeight: 700, color: '#0f172a', marginBottom: '2.5rem' }}>Browse by skill area</h2>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.75rem' }}>
+              {CATEGORIES.map((cat) => (
+                <Link key={cat.value} to={`/browse?category=${cat.value}`}
+                  style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', background: '#fff', border: '1px solid #e2e8f0', borderRadius: '0.5rem', padding: '1rem 1.125rem', textDecoration: 'none', transition: 'border-color 0.15s, box-shadow 0.15s' }}
+                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#7c3aed'; e.currentTarget.style.boxShadow = '0 1px 4px rgba(124,58,237,0.12)'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#e2e8f0'; e.currentTarget.style.boxShadow = 'none'; }}
+                >
+                  <CategoryIcon name={cat.icon} size={15} className="text-slate-400" />
+                  <span style={{ fontSize: '0.875rem', fontWeight: 500, color: '#374151' }}>{cat.label}</span>
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ── Categories ───────────────────────────────────── */}
-      <section className="bg-slate-50 border-b border-slate-100">
-        <div className="max-w-5xl mx-auto px-8 py-20">
-          <p className="text-xs font-semibold tracking-widest uppercase text-violet-600 mb-2">Categories</p>
-          <h2 className="text-2xl font-bold text-slate-800 mb-10">Browse by skill area</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            {CATEGORIES.map((cat) => (
-              <Link
-                key={cat.value}
-                to={`/browse?category=${cat.value}`}
-                className="group flex items-center gap-3 bg-white rounded-lg border border-slate-200 px-4 py-4 hover:border-violet-300 hover:shadow-sm transition-all"
-              >
-                <CategoryIcon
-                  name={cat.icon}
-                  size={16}
-                  className="text-slate-400 group-hover:text-violet-500 transition-colors shrink-0"
-                />
-                <span className="text-sm font-medium text-slate-700 group-hover:text-violet-600 transition-colors">
-                  {cat.label}
-                </span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── CTA ──────────────────────────────────────────── */}
+      {/* ── CTA ──────────────────────────── */}
       {!user && (
-        <section className="bg-white">
-          <div className="max-w-5xl mx-auto px-8 py-20">
-            <div className="bg-violet-600 rounded-2xl px-10 py-14 text-center text-white">
-              <h2 className="text-2xl font-bold mb-3">Ready to start swapping?</h2>
-              <p className="text-violet-200 text-sm mb-8 max-w-md mx-auto leading-relaxed">
-                Join professionals exchanging skills every day. Free to join, free to use.
-              </p>
-              <Link
-                to="/register"
-                className="inline-flex items-center gap-2 bg-white text-violet-700 font-semibold px-6 py-3 rounded-lg hover:bg-violet-50 transition-colors"
-              >
-                Create your account <ArrowRight size={16} />
-              </Link>
+        <section style={{ background: '#fff' }}>
+          <div className="section-wrap">
+            <div className="inner">
+              <div style={{ background: '#7c3aed', borderRadius: '1rem', padding: '4rem 3rem', textAlign: 'center', color: '#fff' }}>
+                <h2 style={{ fontSize: '1.75rem', fontWeight: 700, marginBottom: '0.75rem' }}>Ready to start swapping?</h2>
+                <p style={{ fontSize: '0.9375rem', color: '#ddd6fe', marginBottom: '2rem', maxWidth: '28rem', marginLeft: 'auto', marginRight: 'auto', lineHeight: 1.65 }}>
+                  Join professionals exchanging skills every day. Free to join, free to use.
+                </p>
+                <Link to="/register"
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: '#fff', color: '#7c3aed', fontWeight: 700, padding: '0.75rem 1.75rem', borderRadius: '0.5rem', textDecoration: 'none', fontSize: '0.9rem' }}>
+                  Create your account <ArrowRight size={16} />
+                </Link>
+              </div>
             </div>
           </div>
         </section>
       )}
-
     </div>
   );
 }

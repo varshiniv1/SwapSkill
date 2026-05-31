@@ -43,8 +43,8 @@ export default function Browse() {
   const setPage = (p) => setSearchParams({ category, page: p });
 
   return (
-    <div className="w-full px-6 py-10 md:px-12 lg:px-16">
-    <div className="max-w-5xl mx-auto">
+    <div className="page-wrap">
+    <div className="inner">
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-slate-800 mb-1">Browse listings</h1>

@@ -1,39 +1,112 @@
 @import "tailwindcss";
 
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+/* ─── Reset ───────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+html { -webkit-font-smoothing: antialiased; }
 
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   background: #f8fafc;
   color: #1e293b;
-  min-height: 100vh;
   line-height: 1.6;
 }
 
-#root {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+#root { min-height: 100vh; display: flex; flex-direction: column; }
+
+/* ─── Layout helpers (used instead of Tailwind responsive px) ── */
+.page-wrap {
+  width: 100%;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+@media (min-width: 640px)  { .page-wrap { padding-left: 2.5rem;  padding-right: 2.5rem;  } }
+@media (min-width: 1024px) { .page-wrap { padding-left: 5rem;    padding-right: 5rem;    } }
+
+.inner { max-width: 72rem; margin-left: auto; margin-right: auto; }
+
+.section-wrap {
+  width: 100%;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+@media (min-width: 640px)  { .section-wrap { padding-left: 2.5rem; padding-right: 2.5rem; } }
+@media (min-width: 1024px) { .section-wrap { padding-left: 5rem;   padding-right: 5rem;   } }
+
+.nav-wrap {
+  width: 100%;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+@media (min-width: 640px)  { .nav-wrap { padding-left: 2.5rem; padding-right: 2.5rem; } }
+@media (min-width: 1024px) { .nav-wrap { padding-left: 5rem;   padding-right: 5rem;   } }
+
+/* ─── Form input ──────────────────────────────────── */
+.field {
+  width: 100%;
+  padding: 0.625rem 0.875rem 0.625rem 2.5rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #0f172a;
+  background: #fff;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 0.5rem;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  -webkit-appearance: none;
+}
+.field::placeholder { color: #94a3b8; }
+.field:focus {
+  border-color: #7c3aed;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12);
+}
+.field-plain {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #0f172a;
+  background: #fff;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 0.5rem;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  -webkit-appearance: none;
+}
+.field-plain:focus {
+  border-color: #7c3aed;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12);
+}
+textarea.field, textarea.field-plain { resize: none; }
+
+/* ─── Auth card ───────────────────────────────────── */
+.auth-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  padding: 2.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.06), 0 2px 4px -1px rgba(0,0,0,0.04);
 }
 
-/* Consistent page wrapper used across all inner pages */
-.page {
-  max-width: 64rem;      /* 1024px */
-  margin-inline: auto;
-  padding: 3rem 2rem;
+/* ─── Primary button ──────────────────────────────── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0.7rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #fff;
+  background: #7c3aed;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background 0.15s;
 }
-
-@media (max-width: 640px) {
-  .page {
-    padding: 2rem 1.25rem;
-  }
-}
+.btn-primary:hover  { background: #6d28d9; }
+.btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
