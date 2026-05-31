@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: swapskill-api
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node server/index.js
+    envVars:
+      - key: MONGO_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: CLIENT_URL
+        sync: false
+      - key: NODE_ENV
+        value: production
