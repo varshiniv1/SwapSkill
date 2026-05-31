@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
@@ -60,7 +60,7 @@ export default function ListingDetail() {
   const cat = getCategoryMeta(listing.offerCategory);
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-8">
+    <div className="max-w-3xl mx-auto px-8 py-12">
       <button onClick={() => navigate(-1)} className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-violet-600 mb-6 transition-colors">
         <ArrowLeft size={16} /> Back
       </button>
@@ -177,7 +177,7 @@ export default function ListingDetail() {
                 <textarea
                   rows={3}
                   className="w-full mt-1 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400 resize-none"
-                  placeholder="Add any details about your proposal…"
+                  placeholder="Add any details about your proposalâ€¦"
                   value={form.message}
                   onChange={(e) => setForm({ ...form, message: e.target.value })}
                 />
@@ -204,7 +204,7 @@ export default function ListingDetail() {
                   disabled={submitting}
                   className="flex-1 bg-violet-600 text-white py-2.5 rounded-xl font-semibold hover:bg-violet-700 transition-colors disabled:opacity-60"
                 >
-                  {submitting ? 'Sending…' : 'Send request'}
+                  {submitting ? 'Sendingâ€¦' : 'Send request'}
                 </button>
               </div>
             </form>

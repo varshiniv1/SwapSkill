@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import api from '../api/axios';
 import toast from 'react-hot-toast';
@@ -61,7 +61,7 @@ export default function CreateListing() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-8">
+    <div className="max-w-2xl mx-auto px-8 py-12">
       <button onClick={() => navigate(-1)} className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-violet-600 mb-6 transition-colors">
         <ArrowLeft size={16} /> Back
       </button>
@@ -137,7 +137,7 @@ export default function CreateListing() {
           <div className="flex gap-2 mt-1">
             <input
               className="flex-1 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400"
-              placeholder="e.g. Copywriting, Logo design…"
+              placeholder="e.g. Copywriting, Logo designâ€¦"
               value={wantInput}
               onChange={(e) => setWantInput(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addWant())}
@@ -168,7 +168,7 @@ export default function CreateListing() {
           <textarea
             rows={3}
             className="w-full mt-1 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400 resize-none"
-            placeholder="Describe what you'll deliver, your experience, and what you're looking for…"
+            placeholder="Describe what you'll deliver, your experience, and what you're looking forâ€¦"
             value={form.description}
             onChange={(e) => setForm({ ...form, description: e.target.value })}
           />
@@ -188,7 +188,7 @@ export default function CreateListing() {
           disabled={loading}
           className="w-full bg-violet-600 text-white font-semibold py-3 rounded-xl hover:bg-violet-700 transition-colors disabled:opacity-60"
         >
-          {loading ? 'Saving…' : id ? 'Update listing' : 'Post listing'}
+          {loading ? 'Savingâ€¦' : id ? 'Update listing' : 'Post listing'}
         </button>
       </form>
     </div>

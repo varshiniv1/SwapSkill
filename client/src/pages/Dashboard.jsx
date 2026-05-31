@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import api from '../api/axios';
 import SwapCard from '../components/SwapCard';
 import toast from 'react-hot-toast';
@@ -65,7 +65,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-8">
+    <div className="max-w-3xl mx-auto px-8 py-12">
       <h1 className="text-2xl font-bold text-slate-800 mb-1">Your swaps</h1>
       <p className="text-slate-500 text-sm mb-6">Track all your incoming and outgoing swap requests.</p>
 
@@ -94,7 +94,7 @@ export default function Dashboard() {
         </div>
       ) : filtered.length === 0 ? (
         <div className="text-center py-16">
-          <p className="text-4xl mb-4">🤝</p>
+          <p className="text-4xl mb-4">ðŸ¤</p>
           <p className="text-slate-500">No swaps here yet.</p>
         </div>
       ) : (
@@ -115,7 +115,7 @@ export default function Dashboard() {
                 <textarea
                   rows={3}
                   className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400 resize-none"
-                  placeholder="Agreed scope of work (optional)…"
+                  placeholder="Agreed scope of work (optional)â€¦"
                   value={agreedScope}
                   onChange={(e) => setAgreedScope(e.target.value)}
                 />
@@ -127,7 +127,7 @@ export default function Dashboard() {
                 <textarea
                   rows={3}
                   className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400 resize-none"
-                  placeholder="Describe your counter-offer…"
+                  placeholder="Describe your counter-offerâ€¦"
                   value={counterMsg}
                   onChange={(e) => setCounterMsg(e.target.value)}
                 />
@@ -152,13 +152,13 @@ export default function Dashboard() {
                       type="button"
                       onClick={() => setReviewData({ ...reviewData, rating: s })}
                       className={`text-2xl transition-transform hover:scale-110 ${s <= reviewData.rating ? 'text-amber-400' : 'text-slate-200'}`}
-                    >★</button>
+                    >â˜…</button>
                   ))}
                 </div>
                 <textarea
                   rows={3}
                   className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400 resize-none"
-                  placeholder="Write a short review…"
+                  placeholder="Write a short reviewâ€¦"
                   value={reviewData.comment}
                   onChange={(e) => setReviewData({ ...reviewData, comment: e.target.value })}
                 />

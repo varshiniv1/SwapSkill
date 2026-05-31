@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
@@ -56,7 +56,7 @@ export default function Profile() {
   if (!profile) return <div className="text-center py-20 text-slate-500">User not found.</div>;
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
+    <div className="max-w-4xl mx-auto px-8 py-12">
       {/* Profile card */}
       <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-6">
         <div className="flex items-start justify-between gap-4">
@@ -76,7 +76,7 @@ export default function Profile() {
               )}
               <div className="flex items-center gap-2 mt-1">
                 <StarRating rating={profile.rating || 0} size={15} />
-                <span className="text-sm text-slate-500">{profile.rating?.toFixed(1) || '–'} ({profile.reviewCount || 0} reviews)</span>
+                <span className="text-sm text-slate-500">{profile.rating?.toFixed(1) || 'â€“'} ({profile.reviewCount || 0} reviews)</span>
               </div>
             </div>
           </div>
@@ -85,7 +85,7 @@ export default function Profile() {
               onClick={() => editing ? handleSave() : setEditing(true)}
               className="flex items-center gap-1.5 text-sm border border-slate-200 px-3 py-2 rounded-xl hover:bg-slate-50 transition-colors"
             >
-              <Edit size={14} /> {editing ? (saving ? 'Saving…' : 'Save') : 'Edit'}
+              <Edit size={14} /> {editing ? (saving ? 'Savingâ€¦' : 'Save') : 'Edit'}
             </button>
           )}
         </div>
@@ -96,7 +96,7 @@ export default function Profile() {
             <textarea
               rows={2}
               className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400 resize-none"
-              placeholder="Write something about yourself…"
+              placeholder="Write something about yourselfâ€¦"
               value={editForm.bio}
               onChange={(e) => setEditForm({ ...editForm, bio: e.target.value })}
             />

@@ -23,7 +23,7 @@ export default function Navbar() {
 
   return (
     <nav className="bg-white border-b border-slate-200 sticky top-0 z-50">
-      <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+      <div className="max-w-5xl mx-auto px-8 h-16 flex items-center justify-between w-full">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 font-bold text-xl text-violet-600">
           <Repeat2 size={24} />
