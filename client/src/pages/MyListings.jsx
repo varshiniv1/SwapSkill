@@ -1,21 +1,18 @@
-﻿import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import api from '../api/axios';
 import toast from 'react-hot-toast';
 import { LEVEL_COLORS, getCategoryMeta } from '../utils/constants';
 import CategoryIcon from '../components/CategoryIcon';
-import { PlusCircle, Edit, Trash2, ToggleLeft, ToggleRight } from 'lucide-react';
+import { PlusCircle, Edit, Trash2, ToggleLeft, ToggleRight, FileText } from 'lucide-react';
 
 export default function MyListings() {
   const [listings, setListings] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
+  const [loading, setLoading]   = useState(true);
 
   const fetch = async () => {
-    try {
-      const res = await api.get('/listings/mine');
-      setListings(res.data);
-    } catch { /* ignore */ }
+    try { const res = await api.get('/listings/mine'); setListings(res.data); }
+    catch { /* ignore */ }
     finally { setLoading(false); }
   };
 
@@ -23,90 +20,102 @@ export default function MyListings() {
 
   const handleDelete = async (id) => {
     if (!confirm('Delete this listing?')) return;
-    try {
-      await api.delete(`/listings/${id}`);
-      toast.success('Deleted');
-      setListings((prev) => prev.filter((l) => l._id !== id));
-    } catch { toast.error('Failed to delete'); }
+    try { await api.delete(`/listings/${id}`); toast.success('Listing deleted.'); setListings((p) => p.filter((l) => l._id !== id)); }
+    catch { toast.error('Failed to delete.'); }
   };
 
   const toggleActive = async (listing) => {
     try {
-      const updated = await api.put(`/listings/${listing._id}`, { ...listing, isActive: !listing.isActive });
-      setListings((prev) => prev.map((l) => l._id === listing._id ? updated.data : l));
-      toast.success(updated.data.isActive ? 'Listing activated' : 'Listing paused');
-    } catch { toast.error('Failed to update'); }
+      const res = await api.put(`/listings/${listing._id}`, { ...listing, isActive: !listing.isActive });
+      setListings((p) => p.map((l) => l._id === listing._id ? res.data : l));
+      toast.success(res.data.isActive ? 'Listing activated.' : 'Listing paused.');
+    } catch { toast.error('Failed to update.'); }
   };
 
   return (
-    <div className="max-w-3xl mx-auto px-8 py-12">
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-800">My listings</h1>
-          <p className="text-slate-500 text-sm">{listings.length} listing{listings.length !== 1 ? 's' : ''}</p>
-        </div>
-        <Link
-          to="/listings/new"
-          className="flex items-center gap-2 bg-violet-600 text-white px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-violet-700 transition-colors"
-        >
-          <PlusCircle size={16} /> New listing
-        </Link>
-      </div>
+    <div className="page-wrap">
+      <div className="inner" style={{ maxWidth: '48rem' }}>
 
-      {loading ? (
-        <div className="space-y-3">
-          {[...Array(3)].map((_, i) => <div key={i} className="bg-white rounded-2xl border border-slate-200 h-24 animate-pulse" />)}
-        </div>
-      ) : listings.length === 0 ? (
-        <div className="text-center py-16 bg-white rounded-lg border border-slate-200">
-          <p className="text-slate-500 mb-4">No listings yet.</p>
-          <Link to="/listings/new" className="bg-violet-600 text-white px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-violet-700 transition-colors">
-            Post your first listing
+        {/* Header */}
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '2rem', gap: '1rem' }}>
+          <div>
+            <h1 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#0f172a', marginBottom: '0.25rem' }}>My listings</h1>
+            <p style={{ fontSize: '0.875rem', color: '#64748b' }}>
+              {listings.length} listing{listings.length !== 1 ? 's' : ''}
+            </p>
+          </div>
+          <Link to="/listings/new"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: '#7c3aed', color: '#fff', fontWeight: 600, fontSize: '0.875rem', padding: '0.625rem 1.125rem', borderRadius: '0.5rem', textDecoration: 'none', whiteSpace: 'nowrap' }}>
+            <PlusCircle size={16} /> New listing
           </Link>
         </div>
-      ) : (
-        <div className="space-y-3">
-          {listings.map((l) => {
-            const cat = getCategoryMeta(l.offerCategory);
-            return (
-              <div key={l._id} className={`bg-white rounded-lg border p-4 flex items-center gap-4 ${l.isActive ? 'border-slate-200' : 'border-slate-100 opacity-60'}`}>
-                <div className="w-8 h-8 rounded-md bg-slate-100 flex items-center justify-center shrink-0">
-                  <CategoryIcon name={cat.icon} size={15} className="text-slate-500" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="font-semibold text-slate-800 truncate">{l.title}</p>
-                  <div className="flex items-center gap-2 mt-0.5 flex-wrap">
-                    <span className="text-xs text-slate-400">{l.offerSkill}</span>
-                    <span className={`text-xs px-2 py-0.5 rounded-full capitalize ${LEVEL_COLORS[l.offerLevel]}`}>{l.offerLevel}</span>
-                    {!l.isActive && <span className="text-xs text-slate-400">Paused</span>}
+
+        {/* Content */}
+        {loading ? (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+            {[...Array(3)].map((_, i) => (
+              <div key={i} style={{ background: '#fff', borderRadius: '0.75rem', border: '1px solid #f1f5f9', height: '5rem' }} />
+            ))}
+          </div>
+        ) : listings.length === 0 ? (
+          <div style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: '0.875rem', padding: '4rem 2rem', textAlign: 'center', boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}>
+            <div style={{ width: '3rem', height: '3rem', borderRadius: '50%', background: '#f5f3ff', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem' }}>
+              <FileText size={20} style={{ color: '#7c3aed' }} />
+            </div>
+            <p style={{ fontWeight: 600, color: '#374151', marginBottom: '0.375rem' }}>No listings yet</p>
+            <p style={{ fontSize: '0.875rem', color: '#64748b', marginBottom: '1.5rem' }}>Post your first listing and start swapping skills.</p>
+            <Link to="/listings/new"
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: '#7c3aed', color: '#fff', fontWeight: 600, fontSize: '0.875rem', padding: '0.625rem 1.25rem', borderRadius: '0.5rem', textDecoration: 'none' }}>
+              <PlusCircle size={15} /> Post a listing
+            </Link>
+          </div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+            {listings.map((l) => {
+              const cat = getCategoryMeta(l.offerCategory);
+              return (
+                <div key={l._id} style={{
+                  display: 'flex', alignItems: 'center', gap: '1rem',
+                  background: '#fff', border: '1px solid #e2e8f0', borderRadius: '0.75rem',
+                  padding: '1rem 1.25rem', opacity: l.isActive ? 1 : 0.55,
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+                }}>
+                  {/* Icon */}
+                  <div style={{ width: '2.25rem', height: '2.25rem', borderRadius: '0.5rem', background: '#f8fafc', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <CategoryIcon name={cat.icon} size={15} className="text-slate-400" />
+                  </div>
+
+                  {/* Info */}
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <p style={{ fontWeight: 600, color: '#0f172a', fontSize: '0.9375rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{l.title}</p>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.25rem', flexWrap: 'wrap' }}>
+                      <span style={{ fontSize: '0.8125rem', color: '#64748b' }}>{l.offerSkill}</span>
+                      <span style={{ fontSize: '0.75rem', fontWeight: 500, padding: '0.125rem 0.5rem', borderRadius: '9999px', textTransform: 'capitalize', background: '#f1f5f9', color: '#475569' }}>{l.offerLevel}</span>
+                      {!l.isActive && <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>Paused</span>}
+                    </div>
+                  </div>
+
+                  {/* Actions */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', flexShrink: 0 }}>
+                    <button onClick={() => toggleActive(l)} title={l.isActive ? 'Pause' : 'Activate'}
+                      style={{ padding: '0.375rem', borderRadius: '0.375rem', background: 'none', border: 'none', cursor: 'pointer', color: l.isActive ? '#7c3aed' : '#94a3b8' }}>
+                      {l.isActive ? <ToggleRight size={20} /> : <ToggleLeft size={20} />}
+                    </button>
+                    <Link to={`/listings/${l._id}/edit`}
+                      style={{ padding: '0.375rem', borderRadius: '0.375rem', color: '#64748b', display: 'flex' }}>
+                      <Edit size={16} />
+                    </Link>
+                    <button onClick={() => handleDelete(l._id)}
+                      style={{ padding: '0.375rem', borderRadius: '0.375rem', background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8' }}>
+                      <Trash2 size={16} />
+                    </button>
                   </div>
                 </div>
-                <div className="flex items-center gap-1 shrink-0">
-                  <button
-                    onClick={() => toggleActive(l)}
-                    className="text-slate-400 hover:text-violet-600 transition-colors p-1.5 rounded-lg hover:bg-violet-50"
-                    title={l.isActive ? 'Pause' : 'Activate'}
-                  >
-                    {l.isActive ? <ToggleRight size={20} className="text-violet-600" /> : <ToggleLeft size={20} />}
-                  </button>
-                  <Link
-                    to={`/listings/${l._id}/edit`}
-                    className="text-slate-400 hover:text-violet-600 transition-colors p-1.5 rounded-lg hover:bg-violet-50"
-                  >
-                    <Edit size={16} />
-                  </Link>
-                  <button
-                    onClick={() => handleDelete(l._id)}
-                    className="text-slate-400 hover:text-red-500 transition-colors p-1.5 rounded-lg hover:bg-red-50"
-                  >
-                    <Trash2 size={16} />
-                  </button>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
+              );
+            })}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

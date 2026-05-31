@@ -60,7 +60,7 @@ export default function ListingDetail() {
   const cat = getCategoryMeta(listing.offerCategory);
 
   return (
-    <div className="max-w-3xl mx-auto px-8 py-12">
+    <div className="page-wrap"><div className="inner" style={{ maxWidth: '44rem' }}>
       <button onClick={() => navigate(-1)} className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-violet-600 mb-6 transition-colors">
         <ArrowLeft size={16} /> Back
       </button>
@@ -211,6 +211,6 @@ export default function ListingDetail() {
           </div>
         </div>
       )}
-    </div>
+    </div></div>
   );
 }
