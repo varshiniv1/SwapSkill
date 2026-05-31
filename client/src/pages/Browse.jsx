@@ -43,7 +43,8 @@ export default function Browse() {
   const setPage = (p) => setSearchParams({ category, page: p });
 
   return (
-    <div className="max-w-5xl mx-auto px-8 py-12">
+    <div className="w-full px-6 py-10 md:px-12 lg:px-16">
+    <div className="max-w-5xl mx-auto">
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-slate-800 mb-1">Browse listings</h1>
@@ -145,6 +146,7 @@ export default function Browse() {
           ))}
         </div>
       )}
+    </div>
     </div>
   );
 }
