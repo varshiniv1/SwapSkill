@@ -1,17 +1,16 @@
-﻿import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import api from '../api/axios';
 import SwapCard from '../components/SwapCard';
 import toast from 'react-hot-toast';
+import { Repeat2 } from 'lucide-react';
 
 const TABS = ['all', 'pending', 'accepted', 'completed', 'declined', 'cancelled'];
 
 export default function Dashboard() {
-  const [swaps, setSwaps] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [tab, setTab] = useState('all');
-
-  // Modal states
-  const [actionModal, setActionModal] = useState(null); // { id, type }
+  const [swaps, setSwaps]           = useState([]);
+  const [loading, setLoading]       = useState(true);
+  const [tab, setTab]               = useState('all');
+  const [actionModal, setActionModal] = useState(null);
   const [counterMsg, setCounterMsg] = useState('');
   const [agreedScope, setAgreedScope] = useState('');
   const [reviewData, setReviewData] = useState({ rating: 0, comment: '' });
@@ -38,144 +37,141 @@ export default function Dashboard() {
   const submitAction = async () => {
     const { id, type } = actionModal;
     try {
-      if (type === 'accept') {
-        await api.put(`/swaps/${id}/respond`, { action: 'accepted', agreedScope });
-        toast.success('Swap accepted!');
-      } else if (type === 'counter') {
-        await api.put(`/swaps/${id}/respond`, { action: 'countered', counterMessage: counterMsg });
-        toast.success('Counter sent');
-      } else if (type === 'decline') {
-        await api.put(`/swaps/${id}/respond`, { action: 'declined' });
-        toast.success('Request declined');
-      } else if (type === 'cancel') {
-        await api.put(`/swaps/${id}/cancel`);
-        toast.success('Request cancelled');
-      } else if (type === 'done') {
-        await api.put(`/swaps/${id}/done`);
-        toast.success('Marked as done!');
-      } else if (type === 'review') {
-        await api.post(`/swaps/${id}/review`, reviewData);
-        toast.success('Review submitted!');
-      }
+      if (type === 'accept')  await api.put(`/swaps/${id}/respond`, { action: 'accepted', agreedScope });
+      if (type === 'counter') await api.put(`/swaps/${id}/respond`, { action: 'countered', counterMessage: counterMsg });
+      if (type === 'decline') await api.put(`/swaps/${id}/respond`, { action: 'declined' });
+      if (type === 'cancel')  await api.put(`/swaps/${id}/cancel`);
+      if (type === 'done')    await api.put(`/swaps/${id}/done`);
+      if (type === 'review')  await api.post(`/swaps/${id}/review`, reviewData);
+      toast.success('Done!');
       setActionModal(null);
       fetchSwaps();
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Action failed');
+      toast.error(err.response?.data?.message || 'Action failed.');
     }
   };
 
+  /* ── pill style ─────────────────────── */
+  const tabPill = (active) => ({
+    padding: '0.375rem 1rem',
+    fontSize: '0.8125rem', fontWeight: 500,
+    borderRadius: '9999px', cursor: 'pointer',
+    border: active ? '1.5px solid #7c3aed' : '1.5px solid #e2e8f0',
+    background: active ? '#7c3aed' : '#fff',
+    color: active ? '#fff' : '#475569',
+    transition: 'all 0.15s', whiteSpace: 'nowrap',
+  });
+
+  const inputStyle = {
+    width: '100%', padding: '0.625rem 0.875rem', fontSize: '0.875rem',
+    color: '#0f172a', background: '#fff', border: '1.5px solid #cbd5e1',
+    borderRadius: '0.5rem', outline: 'none',
+    transition: 'border-color 0.15s, box-shadow 0.15s',
+  };
+  const focusIn  = (e) => { e.target.style.borderColor = '#7c3aed'; e.target.style.boxShadow = '0 0 0 3px rgba(124,58,237,0.1)'; };
+  const focusOut = (e) => { e.target.style.borderColor = '#cbd5e1'; e.target.style.boxShadow = 'none'; };
+
   return (
-    <div className="max-w-3xl mx-auto px-8 py-12">
-      <h1 className="text-2xl font-bold text-slate-800 mb-1">Your swaps</h1>
-      <p className="text-slate-500 text-sm mb-6">Track all your incoming and outgoing swap requests.</p>
+    <div className="page-wrap">
+      <div className="inner" style={{ maxWidth: '48rem' }}>
 
-      {/* Tabs */}
-      <div className="flex flex-wrap gap-2 mb-6">
-        {TABS.map((t) => {
-          const count = t === 'all' ? swaps.length : swaps.filter((s) => s.status === t).length;
-          return (
-            <button
-              key={t}
-              onClick={() => setTab(t)}
-              className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                tab === t ? 'bg-violet-600 text-white' : 'bg-white border border-slate-200 text-slate-600 hover:border-violet-300'
-              }`}
-            >
-              {t.charAt(0).toUpperCase() + t.slice(1)}
-              {count > 0 && <span className="ml-1.5 text-xs opacity-70">({count})</span>}
-            </button>
-          );
-        })}
+        {/* Header */}
+        <div style={{ marginBottom: '2rem' }}>
+          <h1 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#0f172a', marginBottom: '0.25rem' }}>Your swaps</h1>
+          <p style={{ fontSize: '0.875rem', color: '#64748b' }}>Track all your incoming and outgoing swap requests.</p>
+        </div>
+
+        {/* Tab pills */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '2rem' }}>
+          {TABS.map((t) => {
+            const count = t === 'all' ? swaps.length : swaps.filter((s) => s.status === t).length;
+            return (
+              <button key={t} onClick={() => setTab(t)} style={tabPill(tab === t)}>
+                {t.charAt(0).toUpperCase() + t.slice(1)}
+                {count > 0 && (
+                  <span style={{ marginLeft: '0.375rem', fontSize: '0.7rem', opacity: 0.75 }}>({count})</span>
+                )}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Content */}
+        {loading ? (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+            {[...Array(3)].map((_, i) => (
+              <div key={i} style={{ background: '#fff', borderRadius: '0.75rem', border: '1px solid #f1f5f9', height: '9rem' }} />
+            ))}
+          </div>
+        ) : filtered.length === 0 ? (
+          <div style={{ textAlign: 'center', padding: '5rem 0' }}>
+            <div style={{ width: '3rem', height: '3rem', borderRadius: '50%', background: '#f5f3ff', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem' }}>
+              <Repeat2 size={20} style={{ color: '#7c3aed' }} />
+            </div>
+            <p style={{ fontSize: '0.9375rem', color: '#64748b', fontWeight: 500 }}>No swaps here yet.</p>
+            <p style={{ fontSize: '0.875rem', color: '#94a3b8', marginTop: '0.25rem' }}>
+              {tab === 'all' ? 'Browse listings and propose your first swap.' : `No ${tab} swaps.`}
+            </p>
+          </div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            {filtered.map((s) => (
+              <SwapCard key={s._id} swap={s} onAction={handleAction} />
+            ))}
+          </div>
+        )}
       </div>
-
-      {loading ? (
-        <div className="space-y-4">
-          {[...Array(3)].map((_, i) => <div key={i} className="bg-white rounded-2xl border border-slate-200 h-36 animate-pulse" />)}
-        </div>
-      ) : filtered.length === 0 ? (
-        <div className="text-center py-16">
-          <p className="text-4xl mb-4">ðŸ¤</p>
-          <p className="text-slate-500">No swaps here yet.</p>
-        </div>
-      ) : (
-        <div className="space-y-4">
-          {filtered.map((s) => (
-            <SwapCard key={s._id} swap={s} onAction={handleAction} />
-          ))}
-        </div>
-      )}
 
       {/* Action modal */}
       {actionModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
-          <div className="bg-white rounded-2xl p-6 w-full max-w-sm shadow-xl">
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(15,23,42,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 50, padding: '1rem' }}>
+          <div style={{ background: '#fff', borderRadius: '1rem', padding: '2rem', width: '100%', maxWidth: '24rem', boxShadow: '0 20px 40px rgba(0,0,0,0.15)' }}>
+
             {actionModal.type === 'accept' && (
               <>
-                <h3 className="text-lg font-bold text-slate-800 mb-3">Accept & set scope</h3>
-                <textarea
-                  rows={3}
-                  className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400 resize-none"
-                  placeholder="Agreed scope of work (optional)â€¦"
-                  value={agreedScope}
-                  onChange={(e) => setAgreedScope(e.target.value)}
-                />
+                <h3 style={{ fontSize: '1.0625rem', fontWeight: 700, color: '#0f172a', marginBottom: '1rem' }}>Accept swap</h3>
+                <label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 600, color: '#374151', marginBottom: '0.4rem' }}>Agreed scope (optional)</label>
+                <textarea rows={3} style={{ ...inputStyle, resize: 'none' }} placeholder="Briefly describe what both sides will deliver..." value={agreedScope} onChange={(e) => setAgreedScope(e.target.value)} onFocus={focusIn} onBlur={focusOut} />
               </>
             )}
             {actionModal.type === 'counter' && (
               <>
-                <h3 className="text-lg font-bold text-slate-800 mb-3">Send a counter-proposal</h3>
-                <textarea
-                  rows={3}
-                  className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400 resize-none"
-                  placeholder="Describe your counter-offerâ€¦"
-                  value={counterMsg}
-                  onChange={(e) => setCounterMsg(e.target.value)}
-                />
+                <h3 style={{ fontSize: '1.0625rem', fontWeight: 700, color: '#0f172a', marginBottom: '1rem' }}>Send a counter-proposal</h3>
+                <textarea rows={3} style={{ ...inputStyle, resize: 'none' }} placeholder="Describe your counter-offer..." value={counterMsg} onChange={(e) => setCounterMsg(e.target.value)} onFocus={focusIn} onBlur={focusOut} />
               </>
             )}
             {actionModal.type === 'decline' && (
-              <p className="text-slate-700 mb-4">Are you sure you want to decline this request?</p>
+              <p style={{ color: '#374151', marginBottom: '1rem' }}>Decline this swap request?</p>
             )}
             {actionModal.type === 'cancel' && (
-              <p className="text-slate-700 mb-4">Cancel your swap request?</p>
+              <p style={{ color: '#374151', marginBottom: '1rem' }}>Cancel your swap request?</p>
             )}
             {actionModal.type === 'done' && (
-              <p className="text-slate-700 mb-4">Mark your side of the swap as complete?</p>
+              <p style={{ color: '#374151', marginBottom: '1rem' }}>Mark your side of the swap as complete?</p>
             )}
             {actionModal.type === 'review' && (
               <>
-                <h3 className="text-lg font-bold text-slate-800 mb-3">Leave a review</h3>
-                <div className="flex gap-1 mb-3">
+                <h3 style={{ fontSize: '1.0625rem', fontWeight: 700, color: '#0f172a', marginBottom: '1rem' }}>Leave a review</h3>
+                <div style={{ display: 'flex', gap: '0.375rem', marginBottom: '1rem' }}>
                   {[1,2,3,4,5].map((s) => (
-                    <button
-                      key={s}
-                      type="button"
+                    <button key={s} type="button"
                       onClick={() => setReviewData({ ...reviewData, rating: s })}
-                      className={`text-2xl transition-transform hover:scale-110 ${s <= reviewData.rating ? 'text-amber-400' : 'text-slate-200'}`}
-                    >â˜…</button>
+                      style={{ fontSize: '1.5rem', background: 'none', border: 'none', cursor: 'pointer', color: s <= reviewData.rating ? '#f59e0b' : '#e2e8f0', transition: 'color 0.1s' }}>
+                      ★
+                    </button>
                   ))}
                 </div>
-                <textarea
-                  rows={3}
-                  className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400 resize-none"
-                  placeholder="Write a short reviewâ€¦"
-                  value={reviewData.comment}
-                  onChange={(e) => setReviewData({ ...reviewData, comment: e.target.value })}
-                />
+                <textarea rows={3} style={{ ...inputStyle, resize: 'none' }} placeholder="Write a short review..." value={reviewData.comment} onChange={(e) => setReviewData({ ...reviewData, comment: e.target.value })} onFocus={focusIn} onBlur={focusOut} />
               </>
             )}
 
-            <div className="flex gap-3 mt-4">
-              <button
-                onClick={() => setActionModal(null)}
-                className="flex-1 border border-slate-200 text-slate-600 py-2.5 rounded-xl hover:bg-slate-50 font-medium transition-colors"
-              >
+            <div style={{ display: 'flex', gap: '0.625rem', marginTop: '1.5rem' }}>
+              <button onClick={() => setActionModal(null)}
+                style={{ flex: 1, padding: '0.7rem', fontSize: '0.875rem', fontWeight: 600, color: '#475569', background: '#fff', border: '1.5px solid #cbd5e1', borderRadius: '0.5rem', cursor: 'pointer' }}>
                 Cancel
               </button>
-              <button
-                onClick={submitAction}
-                className="flex-1 bg-violet-600 text-white py-2.5 rounded-xl font-semibold hover:bg-violet-700 transition-colors"
-              >
+              <button onClick={submitAction}
+                style={{ flex: 1, padding: '0.7rem', fontSize: '0.875rem', fontWeight: 600, color: '#fff', background: '#7c3aed', border: 'none', borderRadius: '0.5rem', cursor: 'pointer' }}>
                 Confirm
               </button>
             </div>
